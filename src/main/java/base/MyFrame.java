@@ -6,23 +6,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.util.Map;
 
-public class MyFrame extends JFrame implements MouseListener {
+public class MyFrame extends JFrame implements MouseListener, MouseMotionListener {
 
     private final MyCanvas myCanvas;
 
     private Rectangle rectangle;
     Point firstPointer = new Point(0, 0);
     Point secondPointer = new Point(0, 0);
-    int width;
-    int height;
-    int minPointx;
-    int minPointy;
 
     public MyFrame(MyCanvas myCanvas) {
         this.myCanvas = myCanvas;
         this.myCanvas.addMouseListener(this);
+        this.myCanvas.addMouseMotionListener(this);
         this.add(myCanvas);
     }
 
@@ -67,19 +65,27 @@ public class MyFrame extends JFrame implements MouseListener {
     public void mouseExited(MouseEvent e) {
 //        System.out.printf("mouseExited x: %s, y: %s%n", e.getX(), e.getY());
     }
+    @Override
+    public void mouseDragged(MouseEvent e) {
+//        la.setText("MouseDragged("+e.getX()+", "+e.getY()+")");
+//        la.setLocation(e.getX(), e.getY());
+        System.out.println(e.getX()+", "+e.getY());
+    }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+//        System.out.println(e.getX()+", "+e.getY());
+    }
     private void makeRectangle(MouseEvent e) {
-        //문제가 없는데 여기는? 이게 맞는데
-//        System.out.println("클릭 시점의 포지션: " + this.rectangle.getX() +", "+ "뗄 떼 포지션: " +e.getX());
-        width = Math.abs(secondPointer.x - firstPointer.x);
-        height = Math.abs(secondPointer.y - firstPointer.y);
-        minPointx = Math.min(firstPointer.x, secondPointer.x);
-        minPointy = Math.min(firstPointer.y, secondPointer.y);
+        int width = Math.abs(secondPointer.x - firstPointer.x);
+        int height = Math.abs(secondPointer.y - firstPointer.y);
+        int minPointx = Math.min(firstPointer.x, secondPointer.x);
+        int minPointy = Math.min(firstPointer.y, secondPointer.y);
 
+        System.out.println(width+", " + height);
         this.rectangle.setX(minPointx);
         this.rectangle.setY(minPointy);
         this.rectangle.setWidth(width);
         this.rectangle.setHigh(height);
     }
-
 }
